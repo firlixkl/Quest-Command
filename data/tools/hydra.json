@@ -3,11 +3,11 @@
  "summary":"Ataques de fuerza bruta contra multitud de servicios (SSH, FTP, HTTP, SMB, RDP...).",
  "questions":[
   {"id":"service","type":"select","label":"Servicio","options":[
-   {"id":"ssh","label":"SSH","frag":"ssh"},
-   {"id":"ftp","label":"FTP","frag":"ftp"},
-   {"id":"http-post","label":"Formulario web (HTTP POST)","frag":""},
-   {"id":"rdp","label":"RDP","frag":"rdp"},
-   {"id":"smb","label":"SMB","frag":"smb"}]},
+   {"id":"ssh","label":"SSH","frag":"ssh://{v}"},
+   {"id":"ftp","label":"FTP","frag":"ftp://{v}"},
+   {"id":"http-post","label":"Formulario web (HTTP POST)","frag":"http-post-form"},
+   {"id":"rdp","label":"RDP","frag":"rdp://{v}"},
+   {"id":"smb","label":"SMB","frag":"smb://{v}"}]},
   {"id":"usermode","type":"select","label":"Usuario","options":[
    {"id":"single","label":"Usuario único","frag":""},
    {"id":"list","label":"Lista de usuarios","frag":""}]},
@@ -17,8 +17,9 @@
   {"id":"form_path","type":"text","label":"Ruta del formulario","placeholder":"/login","required":true,"when":{"service":"http-post"},"help":"Se usará en el módulo http-post-form."},
   {"id":"form_body","type":"text","label":"Campos del formulario","placeholder":"user=^USER^&pass=^PASS^:Invalid","required":true,"when":{"service":"http-post"},"help":"Formato: datos:cadena_que_indica_fallo"},
   {"id":"t","type":"number","label":"Tareas en paralelo","flag":"-t {v}","default":"4","help":"Baja si el servicio banea por exceso de intentos."},
-  {"id":"ssl","type":"bool","label":"¿Usa SSL/TLS?","flag":"-S","when":{"service":["ftp","http-post"]}},
-  {"id":"target","type":"text","label":"IP/host objetivo","placeholder":"10.10.10.10","required":true},
+  {"id":"ssl_ftp","type":"bool","label":"¿Usa SSL/TLS?","flag":"-S","when":{"service":"ftp"}},
+  {"id":"ssl_http","type":"bool","label":"¿Usa SSL/TLS?","flag":"-S","when":{"service":"http-post"}},
+  {"id":"target","type":"text","label":"IP/host objetivo","flag":"{v}","placeholder":"10.10.10.10","required":true},
   {"id":"port","type":"text","label":"Puerto (si no es el estándar)","flag":"-s {v}"}
  ],
  "cheats":[
