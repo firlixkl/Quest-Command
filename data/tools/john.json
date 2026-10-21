@@ -2,13 +2,13 @@
  "id":"john","name":"John the Ripper","category":"Cracking de contraseñas","binary":"john",
  "summary":"Crackeo offline de hashes de contraseñas.",
  "questions":[
-  {"id":"hashfile","type":"text","label":"Fichero con el/los hash(es)","placeholder":"hashes.txt","required":true},
+  {"id":"hashfile","type":"text","label":"Fichero con el/los hash(es)","flag":"{v}","placeholder":"hashes.txt","required":true},
   {"id":"format","type":"text","label":"Formato del hash","flag":"--format={v}","placeholder":"nt / sha512crypt / raw-md5","help":"Usa john --list=formats para ver todos. Déjalo vacío para autodetectar."},
   {"id":"mode","type":"select","label":"Modo de ataque","options":[
    {"id":"wordlist","label":"Diccionario","frag":""},
    {"id":"incremental","label":"Fuerza bruta (incremental)","frag":"--incremental"},
    {"id":"single","label":"Modo single (usa datos del propio fichero)","frag":"--single"}]},
-  {"id":"wordlist","type":"text","label":"Wordlist","flag":"--wordlist={v}","default":"/usr/share/wordlists/rockyou.txt","when":{"mode":"wordlist"},"required":true},
+  {"id":"wordlist","label":"Wordlist","flag":"--wordlist={v}","default":"/usr/share/wordlists/rockyou.txt","when":{"mode":"wordlist"},"required":true},
   {"id":"rules","type":"bool","label":"Aplicar reglas de mutación","flag":"--rules","when":{"mode":"wordlist"}},
   {"id":"show","type":"bool","label":"Mostrar resultados ya crackeados (--show en lugar de crackear)","flag":"--show"}
  ],
