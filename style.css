@@ -17,3 +17,5 @@ h2{margin-top:28px;color:var(--mu);font-size:14px;text-transform:uppercase;lette
 .cmd{background:#010409;border:1px solid var(--ac);border-radius:8px;padding:14px;margin-top:20px;font-family:monospace;word-break:break-all;display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
 .cmd code{color:var(--ac)}.cheat{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:12px 16px;margin:10px 0}
 .cheat code{display:block;color:var(--ac);font-family:monospace;margin:4px 0;word-break:break-all}.cheat span{color:var(--mu);font-size:14px}
+#app > a:first-child{display:inline-block;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:8px 14px;text-decoration:none;font:inherit;margin-bottom:12px}
+#app > a:first-child:hover{border-color:var(--ac2)}
