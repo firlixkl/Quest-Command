@@ -1,29 +1,160 @@
 {
- "id":"hydra","name":"Hydra","category":"Fuerza bruta de credenciales","binary":"hydra",
- "summary":"Ataques de fuerza bruta contra multitud de servicios (SSH, FTP, HTTP, SMB, RDP...).",
- "questions":[
-  {"id":"service","type":"select","label":"Servicio","options":[
-   {"id":"ssh","label":"SSH","frag":"ssh://{v}"},
-   {"id":"ftp","label":"FTP","frag":"ftp://{v}"},
-   {"id":"http-post","label":"Formulario web (HTTP POST)","frag":"http-post-form"},
-   {"id":"rdp","label":"RDP","frag":"rdp://{v}"},
-   {"id":"smb","label":"SMB","frag":"smb://{v}"}]},
-  {"id":"usermode","type":"select","label":"Usuario","options":[
-   {"id":"single","label":"Usuario único","frag":""},
-   {"id":"list","label":"Lista de usuarios","frag":""}]},
-  {"id":"l","type":"text","label":"Usuario","flag":"-l {v}","placeholder":"admin","required":true,"when":{"usermode":"single"}},
-  {"id":"L","type":"text","label":"Fichero de usuarios","flag":"-L {v}","placeholder":"users.txt","required":true,"when":{"usermode":"list"}},
-  {"id":"P","type":"text","label":"Fichero de contraseñas","flag":"-P {v}","default":"/usr/share/wordlists/rockyou.txt","required":true},
-  {"id":"form_path","type":"text","label":"Ruta del formulario","placeholder":"/login","required":true,"when":{"service":"http-post"},"help":"Se usará en el módulo http-post-form."},
-  {"id":"form_body","type":"text","label":"Campos del formulario","placeholder":"user=^USER^&pass=^PASS^:Invalid","required":true,"when":{"service":"http-post"},"help":"Formato: datos:cadena_que_indica_fallo"},
-  {"id":"t","type":"number","label":"Tareas en paralelo","flag":"-t {v}","default":"4","help":"Baja si el servicio banea por exceso de intentos."},
-  {"id":"ssl_ftp","type":"bool","label":"¿Usa SSL/TLS?","flag":"-S","when":{"service":"ftp"}},
-  {"id":"ssl_http","type":"bool","label":"¿Usa SSL/TLS?","flag":"-S","when":{"service":"http-post"}},
-  {"id":"target","type":"text","label":"IP/host objetivo","flag":"{v}","placeholder":"10.10.10.10","required":true},
-  {"id":"port","type":"text","label":"Puerto (si no es el estándar)","flag":"-s {v}"}
+ "id": "hydra",
+ "name": "Hydra",
+ "category": "Fuerza bruta de credenciales",
+ "binary": "hydra",
+ "summary": "Ataques de fuerza bruta contra multitud de servicios (SSH, FTP, HTTP, SMB, RDP...).",
+ "questions": [
+  {
+   "id": "service",
+   "type": "select",
+   "label": "Servicio",
+   "options": [
+    {
+     "id": "ssh",
+     "label": "SSH",
+     "frag": "ssh"
+    },
+    {
+     "id": "ftp",
+     "label": "FTP",
+     "frag": "ftp"
+    },
+    {
+     "id": "http-post",
+     "label": "Formulario web (HTTP POST)",
+     "frag": ""
+    },
+    {
+     "id": "rdp",
+     "label": "RDP",
+     "frag": "rdp"
+    },
+    {
+     "id": "smb",
+     "label": "SMB",
+     "frag": "smb"
+    }
+   ]
+  },
+  {
+   "id": "usermode",
+   "type": "select",
+   "label": "Usuario",
+   "options": [
+    {
+     "id": "single",
+     "label": "Usuario único",
+     "frag": ""
+    },
+    {
+     "id": "list",
+     "label": "Lista de usuarios",
+     "frag": ""
+    }
+   ]
+  },
+  {
+   "id": "l",
+   "type": "text",
+   "label": "Usuario",
+   "flag": "-l {v}",
+   "placeholder": "admin",
+   "required": true,
+   "when": {
+    "usermode": "single"
+   }
+  },
+  {
+   "id": "L",
+   "type": "text",
+   "label": "Fichero de usuarios",
+   "flag": "-L {v}",
+   "placeholder": "users.txt",
+   "required": true,
+   "when": {
+    "usermode": "list"
+   }
+  },
+  {
+   "id": "P",
+   "type": "text",
+   "label": "Fichero de contraseñas",
+   "flag": "-P {v}",
+   "default": "/usr/share/wordlists/rockyou.txt",
+   "required": true
+  },
+  {
+   "id": "form_path",
+   "type": "text",
+   "label": "Ruta del formulario",
+   "placeholder": "/login",
+   "required": true,
+   "when": {
+    "service": "http-post"
+   },
+   "help": "Se usará en el módulo http-post-form.",
+   "flag": "{v}"
+  },
+  {
+   "id": "form_body",
+   "type": "text",
+   "label": "Campos del formulario",
+   "placeholder": "user=^USER^&pass=^PASS^:Invalid",
+   "required": true,
+   "when": {
+    "service": "http-post"
+   },
+   "help": "Formato: datos:cadena_que_indica_fallo",
+   "flag": "{v}"
+  },
+  {
+   "id": "t",
+   "type": "number",
+   "label": "Tareas en paralelo",
+   "flag": "-t {v}",
+   "default": "4",
+   "help": "Baja si el servicio banea por exceso de intentos."
+  },
+  {
+   "id": "ssl",
+   "type": "bool",
+   "label": "¿Usa SSL/TLS?",
+   "flag": "-S",
+   "when": {
+    "service": [
+     "ftp",
+     "http-post"
+    ]
+   }
+  },
+  {
+   "id": "target",
+   "type": "text",
+   "label": "IP/host objetivo",
+   "placeholder": "10.10.10.10",
+   "required": true,
+   "flag": "{v}"
+  },
+  {
+   "id": "port",
+   "type": "text",
+   "label": "Puerto (si no es el estándar)",
+   "flag": "-s {v}"
+  }
  ],
- "cheats":[
-  {"title":"SSH con lista de usuarios","cmd":"hydra -L users.txt -P rockyou.txt ssh://TARGET"},
-  {"title":"Formulario web","cmd":"hydra -l admin -P rockyou.txt TARGET http-post-form \"/login:user=^USER^&pass=^PASS^:Invalid credentials\""},
-  {"title":"RDP","cmd":"hydra -l administrator -P rockyou.txt rdp://TARGET -t 4"}
- ]}
+ "cheats": [
+  {
+   "title": "SSH con lista de usuarios",
+   "cmd": "hydra -L users.txt -P rockyou.txt ssh://TARGET"
+  },
+  {
+   "title": "Formulario web",
+   "cmd": "hydra -l admin -P rockyou.txt TARGET http-post-form \"/login:user=^USER^&pass=^PASS^:Invalid credentials\""
+  },
+  {
+   "title": "RDP",
+   "cmd": "hydra -l administrator -P rockyou.txt rdp://TARGET -t 4"
+  }
+ ]
+}
