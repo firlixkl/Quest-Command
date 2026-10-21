@@ -1,0 +1,24 @@
+{
+ "id":"gobuster","name":"Gobuster","category":"Enumeración web","binary":"gobuster",
+ "summary":"Fuerza bruta de directorios, subdominios DNS y virtual hosts.",
+ "questions":[
+  {"id":"mode","type":"select","label":"¿Qué quieres enumerar?","help":"Elige según cómo esté publicado el objetivo.","options":[
+   {"id":"dir","label":"Directorios/ficheros de una web","frag":"dir"},
+   {"id":"dns","label":"Subdominios vía DNS","frag":"dns"},
+   {"id":"vhost","label":"Virtual hosts (misma IP, distinto Host)","frag":"vhost"}]},
+  {"id":"url","type":"text","label":"URL objetivo","help":"Incluye http:// o https://","flag":"-u {v}","placeholder":"http://10.10.10.10","required":true,"when":{"mode":["dir","vhost"]}},
+  {"id":"domain","type":"text","label":"Dominio objetivo","flag":"-d {v}","placeholder":"ejemplo.htb","required":true,"when":{"mode":"dns"}},
+  {"id":"wl_web","type":"text","label":"Wordlist","flag":"-w {v}","default":"/usr/share/wordlists/dirb/common.txt","when":{"mode":["dir","vhost"]},"help":"Ruta a la wordlist (SecLists: Discovery/Web-Content)."},
+  {"id":"wl_dns","type":"text","label":"Wordlist DNS","flag":"-w {v}","default":"/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt","when":{"mode":"dns"}},
+  {"id":"ext","type":"text","label":"Extensiones","flag":"-x {v}","placeholder":"php,txt,html","when":{"mode":"dir"},"help":"Opcional, separadas por comas."},
+  {"id":"append","type":"bool","label":"Añadir dominio","flag":"--append-domain","when":{"mode":"vhost"},"help":"Necesario en versiones recientes para vhost."},
+  {"id":"ips","type":"bool","label":"Mostrar IPs","flag":"-i","when":{"mode":"dns"}},
+  {"id":"k","type":"bool","label":"¿Ignorar errores de certificado TLS?","flag":"-k","when":{"mode":["dir","vhost"]}},
+  {"id":"t","type":"number","label":"Hilos","flag":"-t {v}","default":"10","help":"Más hilos = más rápido y más ruido."},
+  {"id":"o","type":"text","label":"Fichero de salida","flag":"-o {v}","placeholder":"gobuster.txt","help":"Opcional."}
+ ],
+ "cheats":[
+  {"title":"Directorios","cmd":"gobuster dir -u http://TARGET -w /usr/share/wordlists/dirb/common.txt -x php,txt"},
+  {"title":"Subdominios","cmd":"gobuster dns -d ejemplo.htb -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt"},
+  {"title":"VHosts","cmd":"gobuster vhost -u http://TARGET -w WORDLIST --append-domain","note":"Si el dominio no resuelve, añádelo a /etc/hosts."}
+ ]}

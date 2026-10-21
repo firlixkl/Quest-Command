@@ -1,0 +1,22 @@
+{
+ "id":"nmap","name":"Nmap","category":"Reconocimiento","binary":"nmap",
+ "summary":"Escaneo de puertos, servicios, versiones y scripts NSE.",
+ "questions":[
+  {"id":"scan","type":"select","label":"¿Qué quieres hacer?","options":[
+   {"id":"quick","label":"Escaneo rápido (top 100 puertos)","frag":"-F"},
+   {"id":"full","label":"Todos los puertos TCP","frag":"-p-"},
+   {"id":"svc","label":"Servicios, versiones y scripts por defecto","frag":"-sC -sV"},
+   {"id":"udp","label":"UDP top 100 (requiere sudo)","frag":"-sU --top-ports 100"}]},
+  {"id":"speed","type":"select","label":"Velocidad","help":"T4 es lo habitual en laboratorios; T2 es más sigiloso.","options":[
+   {"id":"t2","label":"Lento / sigiloso","frag":"-T2"},
+   {"id":"t3","label":"Normal","frag":""},
+   {"id":"t4","label":"Rápido","frag":"-T4"}],"default":"t4"},
+  {"id":"pn","type":"bool","label":"¿El host bloquea ping?","flag":"-Pn","help":"Salta el descubrimiento de host."},
+  {"id":"v","type":"bool","label":"Modo verboso","flag":"-v"},
+  {"id":"o","type":"text","label":"Prefijo de salida (todos los formatos)","flag":"-oA {v}","placeholder":"scan_inicial","help":"Opcional."},
+  {"id":"target","type":"text","label":"Objetivo","flag":"{v}","placeholder":"10.10.10.10","required":true}
+ ],
+ "cheats":[
+  {"title":"Típico en CTF","cmd":"nmap -p- --min-rate 5000 -oA full TARGET","note":"Luego -sC -sV sobre los puertos abiertos."},
+  {"title":"Scripts de vulnerabilidades","cmd":"nmap --script vuln -p 80,443 TARGET"}
+ ]}

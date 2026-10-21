@@ -1,0 +1,19 @@
+:root{--bg:#0d1117;--card:#161b22;--bd:#30363d;--tx:#e6edf3;--mu:#8b949e;--ac:#3fb950;--ac2:#58a6ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,sans-serif}
+header{padding:16px 24px;border-bottom:1px solid var(--bd);display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.logo{color:var(--ac);font:bold 20px monospace;text-decoration:none}.sub{color:var(--mu);font-size:14px}
+main{max-width:1000px;margin:0 auto;padding:24px}a{color:var(--ac2)}
+input[type=text],input[type=search],input[type=number]{width:100%;padding:10px;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;font:inherit}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chip,button{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:8px 14px;cursor:pointer;font:inherit}
+.chip.on,button.pri{border-color:var(--ac);color:var(--ac)}button:hover,.chip:hover{border-color:var(--ac2)}
+h2{margin-top:28px;color:var(--mu);font-size:14px;text-transform:uppercase;letter-spacing:.1em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{display:block;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:16px;text-decoration:none;color:var(--tx)}
+.card:hover{border-color:var(--ac)}.card b{font-family:monospace;color:var(--ac);font-size:18px}.card p{color:var(--mu);margin:6px 0 0;font-size:14px}
+.tabs{display:flex;gap:8px;margin:16px 0}.q{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:20px}
+.q h3{margin:0 0 4px}.help{color:var(--mu);font-size:14px;margin:0 0 14px}
+.opts{display:grid;gap:8px}.opt{text-align:left}.opt.on{border-color:var(--ac);background:#12261a}.opt small{color:var(--mu);display:block;font-family:monospace}
+.nav{display:flex;justify-content:space-between;margin-top:16px;align-items:center;color:var(--mu)}
+.cmd{background:#010409;border:1px solid var(--ac);border-radius:8px;padding:14px;margin-top:20px;font-family:monospace;word-break:break-all;display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.cmd code{color:var(--ac)}.cheat{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:12px 16px;margin:10px 0}
+.cheat code{display:block;color:var(--ac);font-family:monospace;margin:4px 0;word-break:break-all}.cheat span{color:var(--mu);font-size:14px}
