@@ -2,7 +2,7 @@
  "id":"searchsploit","name":"searchsploit","category":"Reconocimiento","binary":"searchsploit",
  "summary":"Busca exploits localmente en la base de datos de Exploit-DB.",
  "questions":[
-  {"id":"query","type":"text","label":"Software / versión a buscar","placeholder":"Apache 2.4.49","required":true},
+  {"id":"query","type":"text","label":"Software / versión a buscar","flag":"{v}","placeholder":"Apache 2.4.49","required":true},
   {"id":"titles_only","type":"bool","label":"Buscar solo en títulos","flag":"-t","default":true},
   {"id":"mirror","type":"bool","label":"Copiar el exploit al directorio actual tras encontrarlo","flag":"-m <ID>","help":"Sustituye <ID> por el número que te devuelva la búsqueda."}
  ],
