@@ -1,0 +1,13 @@
+{
+ "id":"searchsploit","name":"searchsploit","category":"Reconocimiento","binary":"searchsploit",
+ "summary":"Busca exploits localmente en la base de datos de Exploit-DB.",
+ "questions":[
+  {"id":"query","type":"text","label":"Software / versión a buscar","placeholder":"Apache 2.4.49","required":true},
+  {"id":"titles_only","type":"bool","label":"Buscar solo en títulos","flag":"-t","default":true},
+  {"id":"mirror","type":"bool","label":"Copiar el exploit al directorio actual tras encontrarlo","flag":"-m <ID>","help":"Sustituye <ID> por el número que te devuelva la búsqueda."}
+ ],
+ "cheats":[
+  {"title":"Buscar por software/versión","cmd":"searchsploit apache 2.4.49"},
+  {"title":"Copiar un exploit concreto","cmd":"searchsploit -m 50383"},
+  {"title":"Buscar y ver en formato CSV","cmd":"searchsploit -t wordpress 5.8 --csv"}
+ ]}

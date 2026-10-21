@@ -1,0 +1,19 @@
+{
+ "id":"enum4linux","name":"enum4linux-ng","category":"Enumeración SMB/Windows","binary":"enum4linux-ng",
+ "summary":"Enumeración de usuarios, grupos, shares y políticas en hosts Windows/Samba.",
+ "questions":[
+  {"id":"mode","type":"select","label":"¿Qué enumerar?","options":[
+   {"id":"all","label":"Todo (recomendado para empezar)","frag":"-A"},
+   {"id":"users","label":"Usuarios","frag":"-U"},
+   {"id":"shares","label":"Recursos compartidos","frag":"-S"},
+   {"id":"groups","label":"Grupos","frag":"-G"},
+   {"id":"policy","label":"Política de contraseñas","frag":"-P"}]},
+  {"id":"anon","type":"bool","label":"Sesión nula / anónima","flag":"","default":true,"help":"Por defecto intenta sin credenciales."},
+  {"id":"u","type":"text","label":"Usuario (si tienes credenciales)","flag":"-u {v}","when":{"anon":false}},
+  {"id":"p","type":"text","label":"Contraseña","flag":"-p {v}","when":{"anon":false}},
+  {"id":"target","type":"text","label":"IP objetivo","placeholder":"10.10.10.10","required":true}
+ ],
+ "cheats":[
+  {"title":"Enumeración completa anónima","cmd":"enum4linux-ng -A TARGET"},
+  {"title":"Con credenciales","cmd":"enum4linux-ng -A -u usuario -p contraseña TARGET"}
+ ]}

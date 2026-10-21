@@ -1,0 +1,16 @@
+{
+ "id":"nikto","name":"Nikto","category":"Enumeración web","binary":"nikto",
+ "summary":"Escáner de vulnerabilidades y configuraciones inseguras en servidores web.",
+ "questions":[
+  {"id":"h","type":"text","label":"Host/URL objetivo","flag":"-h {v}","placeholder":"http://10.10.10.10","required":true},
+  {"id":"port","type":"text","label":"Puerto","flag":"-p {v}","placeholder":"443"},
+  {"id":"ssl","type":"bool","label":"Forzar SSL","flag":"-ssl"},
+  {"id":"tuning","type":"text","label":"Tipos de prueba (tuning)","flag":"-Tuning {v}","placeholder":"1,2,3","help":"Opcional, ver -Help de nikto para los códigos."},
+  {"id":"o","type":"text","label":"Fichero de salida","flag":"-o {v}","placeholder":"nikto.html"},
+  {"id":"format","type":"select","label":"Formato de salida","options":[
+   {"id":"txt","label":"Texto","frag":""},{"id":"html","label":"HTML","frag":"-Format htm"},{"id":"csv","label":"CSV","frag":"-Format csv"}]}
+ ],
+ "cheats":[
+  {"title":"Básico","cmd":"nikto -h http://TARGET"},
+  {"title":"HTTPS con salida HTML","cmd":"nikto -h https://TARGET -ssl -Format htm -o resultado.html"}
+ ]}

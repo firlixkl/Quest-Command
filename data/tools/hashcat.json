@@ -1,0 +1,20 @@
+{
+ "id":"hashcat","name":"Hashcat","category":"Cracking de contraseñas","binary":"hashcat",
+ "summary":"Cracking de hashes acelerado por GPU. Más rápido que John para grandes volúmenes.",
+ "questions":[
+  {"id":"m","type":"text","label":"Tipo de hash (-m)","flag":"-m {v}","placeholder":"1000 (NTLM), 0 (MD5), 1800 (sha512crypt)","required":true,"help":"Consulta hashcat --help o hashcat.net/wiki para el código."},
+  {"id":"hashfile","type":"text","label":"Fichero de hashes","placeholder":"hashes.txt","required":true},
+  {"id":"attack","type":"select","label":"Modo de ataque (-a)","options":[
+   {"id":"0","label":"Diccionario","frag":"-a 0"},
+   {"id":"3","label":"Fuerza bruta (máscara)","frag":"-a 3"},
+   {"id":"6","label":"Diccionario + máscara","frag":"-a 6"}]},
+  {"id":"wordlist","type":"text","label":"Wordlist","flag":"{v}","default":"/usr/share/wordlists/rockyou.txt","when":{"attack":["0","6"]},"required":true},
+  {"id":"mask","type":"text","label":"Máscara","flag":"{v}","placeholder":"?u?l?l?l?l?d?d","when":{"attack":["3","6"]},"required":true},
+  {"id":"rules","type":"text","label":"Fichero de reglas","flag":"-r {v}","placeholder":"/usr/share/hashcat/rules/best64.rule","when":{"attack":"0"}},
+  {"id":"o","type":"text","label":"Fichero de salida","flag":"-o {v}","placeholder":"cracked.txt"}
+ ],
+ "cheats":[
+  {"title":"NTLM con diccionario+reglas","cmd":"hashcat -m 1000 -a 0 hashes.txt /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule"},
+  {"title":"Fuerza bruta con máscara","cmd":"hashcat -m 0 -a 3 hashes.txt ?u?l?l?l?l?d?d"},
+  {"title":"Ver ya crackeados","cmd":"hashcat -m 1000 hashes.txt --show"}
+ ]}

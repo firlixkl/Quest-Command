@@ -1,0 +1,20 @@
+{
+ "id":"smbmap","name":"SMBMap","category":"Enumeración SMB/Windows","binary":"smbmap",
+ "summary":"Lista permisos sobre recursos compartidos SMB y permite navegar/descargar ficheros.",
+ "questions":[
+  {"id":"H","type":"text","label":"Host objetivo","flag":"-H {v}","placeholder":"10.10.10.10","required":true},
+  {"id":"auth","type":"select","label":"Autenticación","options":[
+   {"id":"null","label":"Sesión nula","frag":"-u null -p \"\""},
+   {"id":"creds","label":"Usuario y contraseña","frag":""},
+   {"id":"hash","label":"Pass-the-hash","frag":""}]},
+  {"id":"u","type":"text","label":"Usuario","flag":"-u {v}","when":{"auth":["creds","hash"]},"required":true},
+  {"id":"p","type":"text","label":"Contraseña","flag":"-p {v}","when":{"auth":"creds"},"required":true},
+  {"id":"hash_v","type":"text","label":"Hash NTLM","flag":"--hash {v}","when":{"auth":"hash"},"required":true},
+  {"id":"r","type":"text","label":"Listar contenido de un recurso","flag":"-r {v}","placeholder":"nombre_recurso"},
+  {"id":"download","type":"text","label":"Descargar fichero remoto","flag":"--download {v}","placeholder":"share\\ruta\\fichero.txt"}
+ ],
+ "cheats":[
+  {"title":"Listar shares anónimo","cmd":"smbmap -H TARGET -u null -p \"\""},
+  {"title":"Con credenciales","cmd":"smbmap -H TARGET -u usuario -p contraseña"},
+  {"title":"Pass-the-hash","cmd":"smbmap -H TARGET -u usuario --hash NTLM_HASH"}
+ ]}

@@ -1,0 +1,19 @@
+{
+ "id":"wfuzz","name":"Wfuzz","category":"Enumeración web","binary":"wfuzz",
+ "summary":"Fuzzer web en Python, alternativa a ffuf, con filtrado flexible por código/tamaño/palabras/líneas.",
+ "questions":[
+  {"id":"url","type":"text","label":"URL con FUZZ","flag":"-u {v}","placeholder":"http://10.10.10.10/FUZZ","required":true},
+  {"id":"w","type":"text","label":"Wordlist","flag":"-w {v}","default":"/usr/share/wordlists/dirb/common.txt","required":true},
+  {"id":"filter","type":"select","label":"Filtrar resultados","options":[
+   {"id":"hc","label":"Ocultar por código de estado","frag":""},
+   {"id":"hw","label":"Ocultar por nº de palabras","frag":""},
+   {"id":"hl","label":"Ocultar por nº de líneas","frag":""},
+   {"id":"none","label":"Sin filtro","frag":""}]},
+  {"id":"hc_v","type":"text","label":"Código(s) a ocultar","flag":"--hc {v}","placeholder":"404","when":{"filter":"hc"},"required":true},
+  {"id":"hw_v","type":"text","label":"Nº de palabras a ocultar","flag":"--hw {v}","placeholder":"150","when":{"filter":"hw"},"required":true},
+  {"id":"hl_v","type":"text","label":"Nº de líneas a ocultar","flag":"--hl {v}","placeholder":"10","when":{"filter":"hl"},"required":true}
+ ],
+ "cheats":[
+  {"title":"Directorios ocultando 404","cmd":"wfuzz -u http://TARGET/FUZZ -w /usr/share/wordlists/dirb/common.txt --hc 404"},
+  {"title":"Parámetro GET","cmd":"wfuzz -u \"http://TARGET/page.php?FUZZ=test\" -w params.txt --hw 150"}
+ ]}

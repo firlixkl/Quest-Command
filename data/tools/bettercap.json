@@ -1,0 +1,17 @@
+{
+ "id":"bettercap","name":"Bettercap","category":"Red / MITM","binary":"bettercap",
+ "summary":"Framework interactivo para ataques Man-in-the-Middle, sniffing y spoofing en red local.",
+ "questions":[
+  {"id":"iface","type":"text","label":"Interfaz de red","flag":"-iface {v}","placeholder":"eth0","required":true},
+  {"id":"mode","type":"select","label":"¿Qué quieres hacer?","options":[
+   {"id":"recon","label":"Solo reconocer hosts de la red","frag":"-eval \"net.probe on; net.recon on\""},
+   {"id":"arp","label":"ARP spoofing + captura HTTP/HTTPS","frag":"-eval \"net.probe on; set arp.spoof.fullduplex true; arp.spoof on; net.sniff on\""},
+   {"id":"caplet","label":"Ejecutar un caplet (.cap)","frag":""}]},
+  {"id":"caplet_path","type":"text","label":"Ruta del caplet","flag":"-caplet {v}","placeholder":"http-ui","required":true,"when":{"mode":"caplet"}},
+  {"id":"target","type":"text","label":"IP objetivo (opcional)","flag":"-eval \"set arp.spoof.targets {v}\"","placeholder":"10.10.10.50","when":{"mode":"arp"},"help":"Si se omite, ataca a toda la subred."}
+ ],
+ "cheats":[
+  {"title":"Reconocimiento de red","cmd":"sudo bettercap -iface eth0 -eval \"net.probe on; net.recon on; sleep 10; net.show\""},
+  {"title":"ARP spoof + sniff HTTP","cmd":"sudo bettercap -iface eth0 -eval \"set arp.spoof.targets 10.10.10.50; arp.spoof on; net.sniff on\""},
+  {"title":"UI web","cmd":"sudo bettercap -iface eth0 -caplet http-ui","note":"Accede luego a https://127.0.0.1:8083"}
+ ]}

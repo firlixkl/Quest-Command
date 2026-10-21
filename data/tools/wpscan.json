@@ -1,0 +1,18 @@
+{
+ "id":"wpscan","name":"WPScan","category":"Enumeración web","binary":"wpscan",
+ "summary":"Escáner de seguridad específico para WordPress (plugins, temas, usuarios, vulnerabilidades).",
+ "questions":[
+  {"id":"url","type":"text","label":"URL del sitio WordPress","flag":"--url {v}","placeholder":"http://10.10.10.10","required":true},
+  {"id":"enum","type":"select","label":"¿Qué enumerar?","options":[
+   {"id":"vp","label":"Plugins vulnerables","frag":"--enumerate vp"},
+   {"id":"ap","label":"Todos los plugins","frag":"--enumerate ap"},
+   {"id":"vt","label":"Temas vulnerables","frag":"--enumerate vt"},
+   {"id":"u","label":"Usuarios","frag":"--enumerate u"}]},
+  {"id":"api","type":"text","label":"API Token de WPVulnDB/WPScan","flag":"--api-token {v}","help":"Opcional, necesario para ver detalles de CVEs."},
+  {"id":"pass_attack","type":"bool","label":"Fuerza bruta de contraseñas tras enumerar usuarios","flag":"--passwords /usr/share/wordlists/rockyou.txt"},
+  {"id":"rua","type":"bool","label":"Ignorar avisos de user-agent","flag":"--random-user-agent","default":true}
+ ],
+ "cheats":[
+  {"title":"Enumeración estándar","cmd":"wpscan --url http://TARGET --enumerate vp,vt,u --random-user-agent"},
+  {"title":"Fuerza bruta tras obtener usuarios","cmd":"wpscan --url http://TARGET --usernames users.txt --passwords rockyou.txt"}
+ ]}

@@ -1,0 +1,29 @@
+{
+ "id":"ffuf","name":"ffuf","category":"Enumeración web","binary":"ffuf",
+ "summary":"Fuzzing rápido de directorios, parámetros, subdominios (vhost) y más, escrito en Go.",
+ "questions":[
+  {"id":"mode","type":"select","label":"¿Qué quieres fuzzear?","options":[
+   {"id":"dir","label":"Directorios/ficheros","frag":""},
+   {"id":"vhost","label":"Virtual hosts (cabecera Host)","frag":""},
+   {"id":"param","label":"Parámetros GET","frag":""},
+   {"id":"post","label":"Parámetros POST","frag":""}]},
+  {"id":"url_dir","type":"text","label":"URL con FUZZ","help":"Pon FUZZ donde quieras probar la wordlist.","flag":"-u {v}","placeholder":"http://10.10.10.10/FUZZ","required":true,"when":{"mode":"dir"}},
+  {"id":"url_vhost","type":"text","label":"URL base","flag":"-u {v}","placeholder":"http://10.10.10.10","required":true,"when":{"mode":"vhost"}},
+  {"id":"host_fuzz","type":"text","label":"Cabecera Host con FUZZ","flag":"-H \"Host: {v}\"","placeholder":"FUZZ.ejemplo.htb","required":true,"when":{"mode":"vhost"}},
+  {"id":"url_param","type":"text","label":"URL con parámetro FUZZ","flag":"-u {v}","placeholder":"http://10.10.10.10/page.php?FUZZ=test","required":true,"when":{"mode":"param"}},
+  {"id":"url_post","type":"text","label":"URL destino","flag":"-u {v}","placeholder":"http://10.10.10.10/login","required":true,"when":{"mode":"post"}},
+  {"id":"data_post","type":"text","label":"Cuerpo POST con FUZZ","flag":"-d \"{v}\"","placeholder":"user=admin&pass=FUZZ","required":true,"when":{"mode":"post"}},
+  {"id":"ct","type":"text","label":"Content-Type","flag":"-H \"Content-Type: {v}\"","default":"application/x-www-form-urlencoded","when":{"mode":"post"}},
+  {"id":"w","type":"text","label":"Wordlist","flag":"-w {v}","default":"/usr/share/wordlists/dirb/common.txt","required":true},
+  {"id":"fc","type":"text","label":"Filtrar por código de estado","flag":"-fc {v}","placeholder":"404","help":"Oculta respuestas con este código."},
+  {"id":"fs","type":"text","label":"Filtrar por tamaño de respuesta","flag":"-fs {v}","placeholder":"1234","help":"Útil cuando todas las respuestas 'falsas' pesan igual."},
+  {"id":"mc","type":"text","label":"Mostrar solo estos códigos","flag":"-mc {v}","placeholder":"200,301,302"},
+  {"id":"recursion","type":"bool","label":"Fuzzing recursivo","flag":"-recursion","when":{"mode":"dir"}},
+  {"id":"ext","type":"text","label":"Extensiones","flag":"-e {v}","placeholder":".php,.txt","when":{"mode":"dir"}},
+  {"id":"t","type":"number","label":"Hilos","flag":"-t {v}","default":"40"}
+ ],
+ "cheats":[
+  {"title":"Directorios","cmd":"ffuf -u http://TARGET/FUZZ -w /usr/share/wordlists/dirb/common.txt -fc 404"},
+  {"title":"VHost fuzzing","cmd":"ffuf -u http://TARGET -H \"Host: FUZZ.ejemplo.htb\" -w subdomains.txt -fs 1234"},
+  {"title":"Login POST","cmd":"ffuf -u http://TARGET/login -X POST -d \"user=admin&pass=FUZZ\" -H \"Content-Type: application/x-www-form-urlencoded\" -w rockyou.txt -fc 401"}
+ ]}
