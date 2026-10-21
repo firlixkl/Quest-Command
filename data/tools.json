@@ -1,2 +1,2 @@
 ["gobuster.json","nmap.json","bettercap.json","crackmapexec.json","enum4linux.json","ffuf.json","hashcat.json","hydra.json","john.json","nikto.json",
-"responder.json","searchsploit.json","smbmap.json"]
+"responder.json","searchsploit.json","smbmap.json","wfuzz.json"]
