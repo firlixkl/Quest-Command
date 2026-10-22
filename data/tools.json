@@ -16,5 +16,5 @@
   "whatweb.json",
   "sqlmap.json",
   "impacket-secretsdump.json",
-  "impacket-getuserspns.json"
+  "impacket-psexec.json"
 ]
