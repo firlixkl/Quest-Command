@@ -141,7 +141,7 @@ El proyecto se diseñó para exponerse públicamente asumiendo un enfoque de mí
 
 ## 📄 Licencia
 
-Uso personal. Ajusta esta sección si decides publicarlo bajo una licencia abierta (MIT, por ejemplo).
+GNU GPLv3.
 
 ---
 
