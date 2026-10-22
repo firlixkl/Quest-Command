@@ -1,4 +1,5 @@
-["gobuster.json",
+[
+  "gobuster.json",
   "nmap.json",
   "bettercap.json",
   "crackmapexec.json",
@@ -8,7 +9,7 @@
   "hydra.json",
   "john.json",
   "nikto.json",
-"responder.json",
+  "responder.json",
   "searchsploit.json",
   "smbmap.json",
   "wfuzz.json",
