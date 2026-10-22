@@ -16,6 +16,5 @@
   "whatweb.json",
   "sqlmap.json",
   "impacket-secretsdump.json",
-  "impacket-getuserspns.json",
   "evil-winrm.json"
 ]
