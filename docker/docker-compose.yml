@@ -1,0 +1,8 @@
+services:
+  quest-command:
+    container_name: quest-command
+    image: quest-command:latest
+    ports:
+      - "8080:80"
+
+    restart: unless-stopped
