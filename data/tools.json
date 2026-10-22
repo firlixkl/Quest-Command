@@ -15,5 +15,6 @@
   "wpscan.json",
   "whatweb.json",
   "sqlmap.json",
-  "impacket-secretsdump.json"
+  "impacket-secretsdump.json",
+  "impacket-getuserspns.json"
 ]
