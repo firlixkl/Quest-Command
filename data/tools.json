@@ -14,5 +14,6 @@
   "wfuzz.json",
   "wpscan.json",
   "whatweb.json",
-  "sqlmap.json"
+  "sqlmap.json",
+  "impacket-secretsdump.json"
 ]
