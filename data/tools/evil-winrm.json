@@ -1,0 +1,78 @@
+{
+ "id": "evil-winrm",
+ "name": "Evil-WinRM",
+ "category": "Post-explotación / Active Directory",
+ "binary": "evil-winrm",
+ "summary": "Shell interactiva en Windows a través de WinRM (puertos 5985/5986), con soporte para pass-the-hash y carga de scripts/binarios.",
+ "questions": [
+  {
+   "id": "i",
+   "type": "text",
+   "label": "IP objetivo",
+   "flag": "-i {v}",
+   "placeholder": "10.10.10.10",
+   "required": true
+  },
+  {
+   "id": "u",
+   "type": "text",
+   "label": "Usuario",
+   "flag": "-u {v}",
+   "placeholder": "administrator",
+   "required": true
+  },
+  {
+   "id": "auth",
+   "type": "select",
+   "label": "Autenticación",
+   "options": [
+    {"id": "password", "label": "Contraseña", "frag": ""},
+    {"id": "hash", "label": "Pass-the-hash (NTLM)", "frag": ""}
+   ]
+  },
+  {
+   "id": "p",
+   "type": "text",
+   "label": "Contraseña",
+   "flag": "-p '{v}'",
+   "required": true,
+   "when": {"auth": "password"}
+  },
+  {
+   "id": "hash",
+   "type": "text",
+   "label": "Hash NTLM",
+   "flag": "-H {v}",
+   "placeholder": "8846f7eaee8fb117ad06bdd830b7586c",
+   "required": true,
+   "when": {"auth": "hash"}
+  },
+  {
+   "id": "ssl",
+   "type": "bool",
+   "label": "Usar SSL (puerto 5986)",
+   "flag": "-S"
+  },
+  {
+   "id": "scripts",
+   "type": "text",
+   "label": "Carpeta de scripts PowerShell",
+   "flag": "-s {v}",
+   "placeholder": "/opt/privesc-scripts/",
+   "help": "Opcional. Los scripts quedan disponibles como comandos dentro de la sesión."
+  },
+  {
+   "id": "executables",
+   "type": "text",
+   "label": "Carpeta de ejecutables",
+   "flag": "-e {v}",
+   "placeholder": "/opt/winpeas/",
+   "help": "Opcional. Permite subir y lanzar binarios con el comando 'menu'."
+  }
+ ],
+ "cheats": [
+  {"title": "Con contraseña", "cmd": "evil-winrm -i 10.10.10.10 -u administrator -p 'Password123'"},
+  {"title": "Pass-the-hash", "cmd": "evil-winrm -i 10.10.10.10 -u administrator -H 8846f7eaee8fb117ad06bdd830b7586c"},
+  {"title": "Con scripts de post-explotación cargados", "cmd": "evil-winrm -i 10.10.10.10 -u administrator -p 'Password123' -s /opt/privesc-scripts/"}
+ ]
+}

