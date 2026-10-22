@@ -16,5 +16,5 @@
   "whatweb.json",
   "sqlmap.json",
   "impacket-secretsdump.json",
-  "impacket-psexec.json"
+  "evil-winrm.json"
 ]
