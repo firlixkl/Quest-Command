@@ -18,5 +18,6 @@
   "sqlmap.json",
   "impacket-secretsdump.json",
   "impacket-getuserspns",
+  "impacket-psexec",
   "evil-winrm.json"
 ]
