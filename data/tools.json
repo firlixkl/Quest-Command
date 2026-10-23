@@ -16,5 +16,6 @@
   "wpscan.json",
   "whatweb.json",
   "sqlmap.json",
-  "impacket-secretsdump.json"
+  "impacket-secretsdump.json",
+  "evil-winrm.json"
 ]
