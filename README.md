@@ -18,7 +18,7 @@ No es una enciclopedia estática de comandos: **el comando se construye en vivo*
 
 | Catálogo | Asistente paso a paso |
 |---|---|
-| *(añade aquí una captura del catálogo)* | *(añade aquí una captura del asistente)* |
+| <img width="1852" height="862" alt="image" src="https://github.com/user-attachments/assets/3f29139b-d02d-4b33-b896-d82bf5e329a6" />| <img width="1110" height="705" alt="image" src="https://github.com/user-attachments/assets/dd46e0f6-15cc-43ea-8341-be7ac84a3b2d" />|
 
 ## 🧩 Características
 
