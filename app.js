@@ -44,6 +44,28 @@ async function fetchTool(fname){
   return {fname,url,ok:true,data:json};
 }
 
+// Lanza como máximo `limit` llamadas a fn() en paralelo en vez de todas de
+// golpe. Evita saturar servidores con pocos recursos (p.ej. un servidor
+// casero tras DDNS) cuando hay muchos ficheros que cargar a la vez.
+const TOOLS_CONCURRENCY=4;
+function mapLimit(items,limit,fn){
+  return new Promise(resolve=>{
+    const results=new Array(items.length);
+    if(!items.length)return resolve(results);
+    let next=0,active=0,done=0;
+    const run=()=>{
+      while(active<limit&&next<items.length){
+        const i=next++;active++;
+        Promise.resolve(fn(items[i],i)).then(r=>{
+          results[i]=r;active--;done++;
+          if(done===items.length)resolve(results);else run();
+        });
+      }
+    };
+    run();
+  });
+}
+
 function mostrarBannerFallos(failed){
   const viejo=$('#tools-err');if(viejo)viejo.remove();
   if(!failed.length)return;
@@ -77,8 +99,10 @@ async function init(){
     return;
   }
 
-  // 2) Cada fichero de herramienta, en paralelo, sin que uno tumbe a los demás
-  const results=await Promise.all(idx.map(fetchTool));
+  // 2) Cada fichero de herramienta, en lotes de TOOLS_CONCURRENCY a la vez
+  //    (no todos de golpe) y sin que uno tumbe a los demás.
+  console.log(`[tools] cargando en lotes de ${TOOLS_CONCURRENCY} peticiones simultáneas`);
+  const results=await mapLimit(idx,TOOLS_CONCURRENCY,fetchTool);
   const ok=results.filter(r=>r.ok);
   const failed=results.filter(r=>!r.ok);
   tools=ok.map(r=>r.data);
