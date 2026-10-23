@@ -1,10 +1,114 @@
 const $=s=>document.querySelector(s),app=$('#app');let tools=[];
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const copy=(t,b)=>{navigator.clipboard.writeText(t);const o=b.textContent;b.textContent='¡Copiado!';setTimeout(()=>b.textContent=o,1200)};
+
+// --- Diagnóstico ---------------------------------------------------------
+// Carga UN fichero de herramienta y devuelve siempre un objeto con el
+// resultado, nunca lanza: así un fichero roto no tumba el Promise.all de
+// todos los demás. Además deja rastro detallado en la consola (F12).
+async function fetchTool(fname){
+  const url='data/tools/'+fname;
+  let res;
+  try{
+    res=await fetch(url);
+  }catch(netErr){
+    console.error(`[tools] ${fname} -> error de red al hacer fetch('${url}')`,netErr);
+    return {fname,url,ok:false,stage:'network',detail:netErr.message||String(netErr)};
+  }
+  let text;
+  try{
+    text=await res.text();
+  }catch(readErr){
+    console.error(`[tools] ${fname} -> no se pudo leer el cuerpo de la respuesta`,readErr);
+    return {fname,url,ok:false,stage:'read',detail:readErr.message||String(readErr)};
+  }
+  if(!res.ok){
+    console.error(`[tools] ${fname} -> HTTP ${res.status} ${res.statusText} pidiendo ${url}`);
+    console.error(`[tools] ${fname} -> cuerpo recibido (primeros 300 car.):\n`+text.slice(0,300));
+    return {fname,url,ok:false,stage:'http',status:res.status,statusText:res.statusText,detail:`HTTP ${res.status} ${res.statusText}`,body:text.slice(0,300)};
+  }
+  let json;
+  try{
+    json=JSON.parse(text);
+  }catch(parseErr){
+    console.error(`[tools] ${fname} -> el servidor respondió 200 pero el cuerpo no es JSON válido`,parseErr);
+    console.error(`[tools] ${fname} -> cuerpo recibido (primeros 300 car.):\n`+text.slice(0,300));
+    return {fname,url,ok:false,stage:'parse',detail:parseErr.message||String(parseErr),body:text.slice(0,300)};
+  }
+  for(const campo of ['id','name','category','binary','summary','questions']){
+    if(json[campo]===undefined){
+      console.warn(`[tools] ${fname} -> cargado, pero le falta el campo obligatorio "${campo}"`);
+    }
+  }
+  console.log(`[tools] ${fname} -> OK (HTTP ${res.status}, id="${json.id}")`);
+  return {fname,url,ok:true,data:json};
+}
+
+function mostrarBannerFallos(failed){
+  const viejo=$('#tools-err');if(viejo)viejo.remove();
+  if(!failed.length)return;
+  const div=document.createElement('div');
+  div.id='tools-err';div.className='err';
+  div.innerHTML=`<b>⚠ No se han podido cargar ${failed.length} fichero(s) de herramientas</b> (detalle completo en la consola, F12 → Console):`+
+    `<ul>${failed.map(f=>`<li><code>${esc(f.url)}</code> — ${esc(f.detail)}</li>`).join('')}</ul>`;
+  app.before(div);
+}
+
 async function init(){
-  try{const idx=await (await fetch('data/tools.json')).json();
-  tools=await Promise.all(idx.map(f=>fetch('data/tools/'+f).then(r=>r.json())));
-  addEventListener('hashchange',route);route()}catch(e){app.textContent='Error cargando datos: '+e}}
+  console.group('%cPentestHub: carga de catálogo','color:#58a6ff;font-weight:bold');
+  console.time('carga total');
+
+  // 1) Índice ---------------------------------------------------------
+  let idx;
+  try{
+    const idxRes=await fetch('data/tools.json');
+    console.log('[tools.json] HTTP',idxRes.status,idxRes.statusText);
+    const idxText=await idxRes.text();
+    if(!idxRes.ok){
+      console.error('[tools.json] cuerpo recibido:\n'+idxText.slice(0,300));
+      throw new Error(`data/tools.json devolvió HTTP ${idxRes.status} ${idxRes.statusText}`);
+    }
+    idx=JSON.parse(idxText);
+    console.log(`[tools.json] ${idx.length} ficheros listados:`,idx);
+  }catch(e){
+    console.error('[tools.json] fallo cargando el índice ->',e);
+    console.timeEnd('carga total');console.groupEnd();
+    app.innerHTML=`<div class="err"><b>No se pudo cargar data/tools.json</b><pre>${esc(e.message||String(e))}</pre></div>`;
+    return;
+  }
+
+  // 2) Cada fichero de herramienta, en paralelo, sin que uno tumbe a los demás
+  const results=await Promise.all(idx.map(fetchTool));
+  const ok=results.filter(r=>r.ok);
+  const failed=results.filter(r=>!r.ok);
+  tools=ok.map(r=>r.data);
+
+  console.table(results.map(r=>({
+    fichero:r.fname,
+    estado:r.ok?'OK':'FALLO',
+    detalle:r.ok?('id='+r.data.id):r.detail
+  })));
+  console.log(`[tools] ${ok.length}/${results.length} cargadas correctamente.`);
+  if(failed.length)console.warn(`[tools] ${failed.length} fallidas:`,failed.map(f=>f.fname));
+  console.timeEnd('carga total');
+  console.groupEnd();
+
+  mostrarBannerFallos(failed);
+
+  addEventListener('hashchange',()=>{
+    try{route()}catch(e){
+      console.error('[render] error al cambiar de ruta ->',e);
+      app.innerHTML=`<div class="err"><b>Error al mostrar esta herramienta</b><pre>${esc(e.message||String(e))}</pre></div>`;
+    }
+  });
+  try{
+    route();
+  }catch(e){
+    console.error('[render] error en el renderizado inicial ->',e);
+    app.innerHTML=`<div class="err"><b>Error al renderizar</b><pre>${esc(e.message||String(e))}</pre></div>`;
+  }
+}
+
 function route(){const t=tools.find(t=>t.id===location.hash.slice(1));t?renderTool(t):renderCatalog()}
 function renderCatalog(){
   const cats=[...new Set(tools.map(t=>t.category))];let cat='',q='';
